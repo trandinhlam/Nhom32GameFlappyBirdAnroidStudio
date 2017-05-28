@@ -8,7 +8,7 @@ import android.view.SurfaceHolder;
  */
 
 public class GameThread extends Thread {
-    private static final int WAITINGTIME=10;// Thời gian chờ giữa mỗi update là 10 milisecond
+    private static final int WAITINGTIME=15;// Thời gian chờ giữa mỗi update
     private boolean running;
     private Surface gameSurface;
     private SurfaceHolder surfaceHolder;
@@ -29,8 +29,9 @@ public class GameThread extends Thread {
             try{// lấy ra đối tượng canvas và khóa nó lại, tránh thread khác sử dụng
                     canvas=this.surfaceHolder.lockCanvas();
 
-                // đồng bộ hóa
+                // đồng bộ hóa, chỗ này chưa hiểu
                 synchronized (canvas){
+                    // cập nhật lại từng đối tượng trên Surface, sau đó vẽ lại tất cả
                     this.gameSurface.update();
                     this.gameSurface.draw(canvas);
                 }
@@ -49,8 +50,8 @@ public class GameThread extends Thread {
             if(waitTime > WAITINGTIME) {
                 waitTime = WAITINGTIME; // Millisecond.
             }
-            System.out.print(" Wait Time="+ waitTime);
-
+            //System.out.print(" Wait Time="+ waitTime);
+            System.out.print("V= "+this.gameSurface.chibi1.getVelocity());
             try {
                 // Ngừng chương trình một chút.
                 this.sleep(waitTime);
