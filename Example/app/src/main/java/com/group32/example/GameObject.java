@@ -21,6 +21,11 @@ public class GameObject {
     protected int width;
     protected int height;
     protected int x;
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     protected int y;
     protected int movingVectorX ;// vector có x=0 tức là vật sẽ di chuyển theo chiều thẳng đứng
     protected int movingVectorY ;// ban đầu object sẽ bay xuống

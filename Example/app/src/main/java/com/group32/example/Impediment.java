@@ -11,8 +11,8 @@ import android.graphics.Paint;
 
 public class Impediment extends GameObject{
     protected static final int GROUND=GameObject.screenheight/10;// khoảng cách từ màn hình tới mặt đất
-    protected static final float VELOCITY=0.7f;
-    protected static final int MINNUM=6;
+    protected static final float VELOCITY=1.2f;
+    protected static final int MINNUM=5;
     protected static final int MAXNUM=10;
     protected static int randomNum=MAXNUM;// số ngẫu nhiên phát sinh vị trí chướng ngại vật
     protected Bitmap Image1;

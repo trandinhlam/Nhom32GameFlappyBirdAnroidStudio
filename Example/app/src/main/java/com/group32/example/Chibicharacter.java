@@ -10,7 +10,7 @@ import android.provider.Settings;
  */
 
 public class Chibicharacter extends GameObject{
-    private static final float UP_VELOCITY = 3.0f;// vận tốc khi bay lên
+    private static final float UP_VELOCITY = 3.2f;// vận tốc khi bay lên
     private static final int ROW_UP_AND_DOWN = 2;// cá nhân nhân vật này chỉ đi từ dưới lên trên
     private Bitmap[] up_and_down;
 
@@ -19,7 +19,7 @@ public class Chibicharacter extends GameObject{
     //private int colUsing;
     // gameSurface là mô phỏng toàn bộ màn hình của trò chơi trong một thời điểm
     public Chibicharacter(Surface gameSurface, Bitmap image, int x, int y) {
-        super(image, 4, 3, x, y); // bitmap có 4 cột và 3 dòng, tức 4*3=12 hình
+        super(Bitmap.createScaledBitmap(image,400,400,false), 4, 3, x, y); // bitmap có 4 cột và 3 dòng, tức 4*3=12 hình
         this.up_and_down = new Bitmap[colCount];
         for(int col = 0; col< this.colCount; col++ ) {
             this.up_and_down[col] = this.createSubImageAt(ROW_UP_AND_DOWN, col);
@@ -45,8 +45,7 @@ public class Chibicharacter extends GameObject{
         }
 
         // màn hình giới hạn khi chơi
-        if(this.y>GameObject.screenheight-Impediment.GROUND-this.getHeight()){//khi chạm đáy thì nhân vật "die"
-            this.y=screenheight-Impediment.GROUND-this.getHeight();
+        if(this.y>GameObject.screenheight-Impediment.GROUND){//khi chạm đáy thì nhân vật "die"
             this.movingVectorY=0;
         }
     }
@@ -55,6 +54,7 @@ public class Chibicharacter extends GameObject{
         Bitmap bitmap=this.up_and_down[0];
         canvas.drawBitmap(bitmap,x,y,null);
         this.lastDrawNanoTime=System.nanoTime();
+
     }
 
 

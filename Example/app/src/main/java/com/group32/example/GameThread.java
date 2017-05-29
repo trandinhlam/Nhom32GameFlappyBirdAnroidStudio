@@ -8,7 +8,7 @@ import android.view.SurfaceHolder;
  */
 
 public class GameThread extends Thread {
-    private static final int WAITINGTIME=15;// Thời gian chờ giữa mỗi update
+    private static final int WAITINGTIME=5;// Thời gian chờ giữa mỗi update
     private boolean running;
     private Surface gameSurface;
     private SurfaceHolder surfaceHolder;

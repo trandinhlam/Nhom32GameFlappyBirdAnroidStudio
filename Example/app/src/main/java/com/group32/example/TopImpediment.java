@@ -9,7 +9,7 @@ import android.graphics.Matrix;
  */
 
 public class TopImpediment extends Impediment {
-    private static final int SLIT_DIMENTION=400;// Khe hở giữa 2 chướng ngại
+    private static final int SLIT_DIMENTION=1200;// Khe hở giữa 2 chướng ngại
     private Surface gameSurface;
     public TopImpediment(Surface s,Bitmap image) {
         super(image);
