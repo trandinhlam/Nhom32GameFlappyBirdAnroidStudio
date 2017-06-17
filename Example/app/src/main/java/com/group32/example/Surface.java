@@ -14,6 +14,7 @@ import android.os.Build;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,10 @@ import java.util.List;
  */
 
 public class Surface extends SurfaceView implements SurfaceHolder.Callback{
-    private static final int DISTANCE2IMPEDIMENTS=500*4/3; //(pixel)
+    public final int height = AndroidDeviceHelper.getHeightScreen(this.getContext());
+    public final int width = AndroidDeviceHelper.getWithScreen(this.getContext());
+
+    private final int DISTANCE2IMPEDIMENTS = width*8/10; //(pixel)
     private int Point=0; //(pixel)
     private int highScore;
     protected Chibicharacter chibi1;
@@ -55,12 +59,13 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
 
     public Surface(Context context) {
         super(context);
-
         // Dảm bảo GameSurface này có thể focus để điều khiển các sự kiện
         this.setFocusable(true);
         // đặt các sự kiện liên quan tới game
         this.getHolder().addCallback(this);
         this.initSoundPool();
+
+        //Toast.makeText(context,GameObject.screenheight,Toast.LENGTH_LONG);
     }
 
     @Override
@@ -68,7 +73,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
         Bitmap chibiBit1= BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.chibi1);
         // Gan nhan vat ban dau la chibit1
-        this.chibi1=new Chibicharacter(this,chibiBit1,GameObject.screenwidth/3,300);
+        this.chibi1=new Chibicharacter(this,chibiBit1,width/3,height/2);
         // tạo chướng ngại vật bottom và top
         this.Bottoms=new ArrayList<BottomImpediment>() ;
         this.Bottoms.add(new BottomImpediment(this,tempBottoms));
@@ -84,8 +89,8 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
         // tạo bầu trời
         this.Clouds = new ArrayList<Clouds>();
         this.Clouds.add(new Clouds(clouds,0));
-        this.Clouds.add(new Clouds(clouds,clouds.getWidth()*9/10));//
-        this.Clouds.add(new Clouds(clouds,clouds.getWidth()*2*9/10));//
+        this.Clouds.add(new Clouds(clouds,clouds.getWidth()*5/10));//
+        this.Clouds.add(new Clouds(clouds,clouds.getWidth()*2*5/10));//
         //Lấy điểm cao nhất
         SharedPreferences setting= this.getContext().getSharedPreferences("GAME_DATA",Context.MODE_PRIVATE);
         highScore=setting.getInt("HIGH_SCORE",0);
@@ -113,13 +118,13 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
         else { // nếu game over
             Paint paint = new Paint();
             paint.setColor(Color.BLUE);
-            paint.setTextSize(100);
+            paint.setTextSize(GameObject.screenheight/10);
             canvas.drawText("Game Over!! ",
                     GameObject.screenwidth / 5, GameObject.screenheight / 2, paint);
             canvas.drawText(String.valueOf(Point),
-                    GameObject.screenwidth / 5 + 220, GameObject.screenheight / 2 + 150, paint);
+                    GameObject.screenwidth *5/10, GameObject.screenheight *6/10, paint);
             canvas.drawText("Tap to retry!!",
-                    GameObject.screenwidth / 5, GameObject.screenheight / 2 + 300, paint);
+                    GameObject.screenwidth / 5, GameObject.screenheight *7/10, paint);
         }
         // Mặt đất sẽ được vẽ sau cùng
         for(Ground item:this.Grounds) {
@@ -128,17 +133,17 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
         if(!GameOver){
             // hiển thị điểm hiện tại
             Paint paint = new Paint();
-            paint.setTextSize(200);
+            paint.setTextSize(GameObject.screenheight/10);
             paint.setColor(Color.parseColor("#5C9047"));
-            int Pointsposition=Impediment.screenheight-Impediment.GROUND+400;
-            int Highscoreposition=Impediment.screenheight-Impediment.GROUND+300;
+            int Pointsposition=Impediment.screenheight-Impediment.GROUND+GameObject.screenheight*5/10;
+            int Highscoreposition=Impediment.screenheight-Impediment.GROUND+GameObject.screenheight*5/10;
             canvas.drawText(String.valueOf(Point), GameObject.screenwidth/4,Pointsposition, paint);
             // Hiển thị điểm cao nhất phía góc phải trên cùng màn hình
-            paint.setTextSize(100);
+            paint.setTextSize(GameObject.screenheight/10);
             paint.setColor(Color.RED);
             canvas.drawText(String.valueOf(highScore), GameObject.screenwidth*3/4+50,  Highscoreposition, paint);
-            canvas.drawBitmap(Bitmap.createScaledBitmap(imageCup,200,200,false),
-                    GameObject.screenwidth*3/4,// hoanh do x cua anh
+            canvas.drawBitmap(Bitmap.createScaledBitmap(imageCup,GameObject.screenwidth,GameObject.screenwidth,false),
+                    GameObject.screenwidth*1/4,// hoanh do x cua anh
                     Highscoreposition+100,
                     null);
         }
@@ -161,7 +166,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
         for(int i=this.Clouds.size()-1; i>=0 ; i--){
             this.Clouds.get(i).update();
         }
-        if (this.Bottoms.get(Bottoms.size()-1).getX()<GameObject.screenwidth-DISTANCE2IMPEDIMENTS ){// mỗi chướng ngại cách nhau một khoảng cách nhất định
+        if (this.Bottoms.get(Bottoms.size()-1).getX()<width-DISTANCE2IMPEDIMENTS ){// mỗi chướng ngại cách nhau một khoảng cách nhất định
             this.Bottoms.add(new BottomImpediment(this, tempBottoms));
             this.Tops.add(new TopImpediment(this,tempBottoms));
         }
@@ -176,9 +181,9 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
 
         }
         // cập nhật cho bầu trời
-        if(this.Clouds.get(0).getX()<0-this.Clouds.get(0).getWidth()*3/2){
+        if(this.Clouds.get(0).getX()<0-this.Clouds.get(0).getWidth()*2/2){
             this.Clouds.remove(0);
-            this.Clouds.add(new Clouds(clouds,clouds.getWidth()*9/10));// tạo mặt đất ở cuối hình ground1
+            this.Clouds.add(new Clouds(clouds,clouds.getWidth()*5/10));// tạo mặt đất ở cuối hình ground1
         }
         if(GameOver){
             for(int i=0;i<Grounds.size();i++){
@@ -220,7 +225,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
 
     private void TurnOnFlag() {// nếu chướng ngại đầu tiên bị xóa khỏi màn hình, tức [1] thay [0] thì bật cờ
                 // điều này đảm bảo mỗi lần đi qua được 1 chướng ngại thì Point chỉ cộng 1 lần
-        if (chibi1.getX() < Bottoms.get(0).getX() + Bottoms.get(0).getWidth()-200) {
+        if (chibi1.getX() < Bottoms.get(0).getX() + Bottoms.get(0).getWidth()) {
                  flagpoint=true;
         }
     }
@@ -348,7 +353,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
                 this.Tops.add(new TopImpediment(this,tempBottoms));
                 // tao thread cho game và start
                 GameOver = false; // chơi lại từ đầu
-                chibi1.resetPosition(300,400);
+                chibi1.resetPosition(width/3,height/2);
                 for (int i = 0; i < this.Bottoms.size(); i++) {
                     this.Tops.get(i).Velocity=0;
                     this.Bottoms.get(i).Velocity=0;
@@ -359,6 +364,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback{
 
                 this.chibi1.MoveUp();
                 this.playSound(this.soundIdJump);
+
                 if(0f == this.Tops.get(0).Velocity)// kiểm tra trước khi
                     for (int i = 0; i < this.Bottoms.size(); i++) {
                         this.Tops.get(i).Velocity=Impediment.VELOCITY;
