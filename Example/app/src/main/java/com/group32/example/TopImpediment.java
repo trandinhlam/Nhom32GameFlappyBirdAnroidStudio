@@ -9,7 +9,7 @@ import android.graphics.Matrix;
  */
 
 public class TopImpediment extends Impediment {
-    private static final int SLIT_DIMENTION=1200;// Khe hở giữa 2 chướng ngại
+    private static final int SLIT_DIMENTION=Chibicharacter.tmpscale*2;// Khe hở giữa 2 chướng ngại gấp 2 lần nhân vật
     private Surface gameSurface;
     public TopImpediment(Surface s,Bitmap image) {
         super(image);
@@ -17,7 +17,7 @@ public class TopImpediment extends Impediment {
         this.Image1=FlipHorizontalBitmap(RotateBitmap(image,180));
         this.gameSurface = s;
         // tung độ y của chướng ngại vật
-        this.y = GameObject.screenheight*(Impediment.randomNum-Impediment.MINNUM)/10-SLIT_DIMENTION-GROUND*2;
+        this.y = GameObject.screenheight*Impediment.randomNum/10-Impediment.GROUND*2-SLIT_DIMENTION-image.getHeight()*7/10;
         // sau khi khởi tạo chướng ngại vật thì thay đổi biến randomnum cho lần tạo Bottom sau
         Impediment.randomNum = MINNUM+ (int)(Math.random() * (MAXNUM-MINNUM)+1);
 

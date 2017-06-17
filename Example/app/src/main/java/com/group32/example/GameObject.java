@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 
 public class GameObject {
     // 2 biến static lưu giới hạn màn hình muốn hiển thị
-
+    public static int scale = Resources.getSystem().getDisplayMetrics().densityDpi;
 
     public static int screenheight = Resources.getSystem().getDisplayMetrics().heightPixels*7/10;// height giới hạn
     public static int screenwidth = Resources.getSystem().getDisplayMetrics().widthPixels;// width toàn màn hình

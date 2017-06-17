@@ -17,7 +17,7 @@ public class Chibicharacter extends GameObject{
     // vận tốc của nhân vật
 
     //private int colUsing;
-    static final int tmpscale = GameObject.screenheight/2;
+    public static final int tmpscale = GameObject.screenheight/2;
     // gameSurface là mô phỏng toàn bộ màn hình của trò chơi trong một thời điểm
     public Chibicharacter(Surface gameSurface, Bitmap image, int x, int y) {
         super(Bitmap.createScaledBitmap(image,tmpscale,tmpscale,false), 4, 3, x, y); // bitmap có 4 cột và 3 dòng, tức 4*3=12 hình
